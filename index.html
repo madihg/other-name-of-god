@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poem</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            background: #fff;
+            color: #111;
+            display: flex;
+            justify-content: center;
+            padding: 2em;
+        }
+
+        .container {
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .line {
+            margin-bottom: 1em;
+            font-size: 1.1em;
+            position: relative;
+        }
+
+        .title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .title-first {
+            margin-bottom: 0.2em;
+        }
+
+        .title-second {
+            margin-top: 0;
+            margin-bottom: 2em;
+        }
+
+        .highlight {
+            cursor: pointer;
+            text-decoration: underline;
+            color: #0077cc;
+        }
+
+        .popup {
+            display: none;
+            background: white;
+            border: 1px solid #000;
+            padding: 1em;
+            font-size: 0.9em;
+            margin: 1em 0;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="poem"></div>
+
+    <script>
+        const poemLines = [
+            "<div class='title title-first'>Josephine is a mother</div>",
+            "<div class='title title-second'>Who lives across the world.</div>",
+            "I am Matt.",
+            "I am a Jew.",
+            "<span class='highlight' data-key='halim'>Halim</span> is Lebanese.",
+            "He is my friend.",
+            "He <span class='highlight' data-key='officiating'>officiated</span> my wedding.",
+            "Halim’s mother is <span class='highlight' data-key='josephine'>Josephine</span>.",
+            "She lives in Beirut.",
+            "I have never met Josephine.",
+            "Josephine has never met a Jew.",
+            "Halim came to visit.",
+            "And had with him a <span class='highlight' data-key='prayer'>prayer</span> Josephine wrote for us.",
+            "It is the first <span class='highlight' data-key='poem'>poem</span> she ever wrote to a Jew.",
+            "Because Halim <span class='highlight' data-key='loves1'>loves</span> us,",
+            "Josephine <span class='highlight' data-key='loves2'>loves</span> us too.",
+            "Josephine is a mother.",
+            "Who lives across the <span class='highlight' data-key='world'>world</span>."
+        ];
+
+        const popupContent = {
+            halim: `I officiated a wedding two years ago. Matt and Danielle. I love them so much. They’re soon to be parents. Any day now. When I told my mother I wanted to mark this moment with and for them the way I did for their wedding, she said she’d write something. I didn’t ask. She just went ahead and wrote a poem.`,
+            josephine: `My mother’s name is Josephine. She lives in Beirut. Her life is a series of botched amendments authored by half a dozen wars, most of which orchestrated by Israel, the southern neighboring country. Rami is Danielle’s father. Rami’s Israeli. Danielle and Matt are of Jewish descent. I mention this to my mum. She says she’ll write something appropriate. I have no idea what she means.`,
+            officiating: `<img src='assets/officiating.png' alt='Officiating Image'/>`,
+            prayer: `<img src='assets/prayer.jpeg' alt='Prayer Image'/>`,
+            poem: `The poem's in French. In English, it means: Lord, God of Love, Yahweh, Light and Goodness, lay your loving hands on this family. Bless their path with your serenity. And that of the child who is about to come into the world, protect them all, now and forever. Amen.`,
+            loves1: `
+                <div>
+                    <audio controls>
+                    <source src="assets/prayer.wav" type="audio/wav">
+                    Your browser does not support the audio element.
+                    </audio>
+                </div>
+                `,
+            loves2: `When I share this with Danielle and Matt, I explain Yahweh isn’t the word Christian Lebanese people use in their prayers. I explain this was my mother’s way of saying she sees them. This other name of god.`,
+            world: `The other name of God is I see you from behind this wall. The other name of God is your children are mine too. The other name of God are our webbed hands and the only iron dome that matters. The other name of God is the spread white sheets drying on our roofs the vantage point from which I wave to you neighbors, tell you it’s hot today, it’s a good day, it’s a great day to let the kids out and to let god in.`
+        };
+
+        const container = document.getElementById("poem");
+
+        poemLines.forEach((line, i) => {
+            const div = document.createElement("div");
+            div.className = "line";
+            div.innerHTML = line;
+            container.appendChild(div);
+
+            const popup = document.createElement("div");
+            popup.className = "popup";
+            container.appendChild(popup);
+        });
+
+        document.addEventListener("click", (e) => {
+            const highlights = document.querySelectorAll(".highlight");
+            const popups = document.querySelectorAll(".popup");
+            const key = e.target.dataset?.key;
+
+            // Hide all popups first
+            popups.forEach(p => p.style.display = 'none');
+
+            if (key && popupContent[key]) {
+                // Find the corresponding popup under the clicked line
+                const clickedLine = e.target.closest(".line");
+                const allLines = Array.from(document.querySelectorAll(".line"));
+                const index = allLines.indexOf(clickedLine);
+                const popupEl = document.querySelectorAll(".popup")[index];
+
+                popupEl.innerHTML = popupContent[key];
+                popupEl.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>
